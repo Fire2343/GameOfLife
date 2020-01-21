@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <SDL.h>
 #include <Windows.h>
+#include <time.h>
 
 const int SCREEN_WIDTH = 1920;
 const int SCREEN_HEIGHT = 1080;
@@ -22,6 +23,7 @@ void paintCell(SDL_Renderer* renderer, int ppc, int c, int l) {
 }
 
 int main(int argc, char *argv[]) {
+    srand(time(NULL));
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -30,7 +32,7 @@ int main(int argc, char *argv[]) {
     else
     {
         //Create window
-        window = SDL_CreateWindow("Game Of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_MAXIMIZED);
+        window = SDL_CreateWindow("Game Of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
         if (window == NULL)
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -42,13 +44,12 @@ int main(int argc, char *argv[]) {
         }
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         //SDL RendererClear sets entire window to color specified in renderer draw color
     }
     for(int c = 0; c < SCREEN_WIDTH / ppc; c++) {
         for(int l = 0; l < SCREEN_HEIGHT / ppc; l++) {
-            if (rand() % 7 == 0) {
+            if (rand() % 2 == 0) {
                 field[l][c] = 1;
                 fieldCopy[l][c] = 1;
                 paintCell(renderer, ppc, c, l);
