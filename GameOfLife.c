@@ -9,7 +9,7 @@ const int SCREEN_HEIGHT = 1080;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
-int ppc = 10; //pixels per cell
+int ppc = 5; //pixels per cell side (square this number to get total cell area)
 
 void paintCell(SDL_Renderer *renderer, int ppc, int c, int l) {
 
@@ -97,14 +97,19 @@ int main(int argc, char *argv[]) {
                         nc = ncav;
                     }
                 }
+                int *v = &fieldCopy[l * fieldWidth + c];
                 if (AliveNeighbors < 2 || AliveNeighbors > 3) {
-                    fieldCopy[l * fieldWidth + c] = 0;
-                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                    paintCell(renderer, ppc, c, l);
+                    if (*v != 0) {
+                        *v = 0;
+                        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                        paintCell(renderer, ppc, c, l);
+                    }
                 }
                 if (AliveNeighbors == 3) {
-                    fieldCopy[l * fieldWidth + c] = 1;
-                    paintCell(renderer, ppc, c, l);
+                    if (*v != 1) {
+                        *v = 1;
+                        paintCell(renderer, ppc, c, l);
+                    }
                 }
             }
         }
@@ -116,7 +121,7 @@ int main(int argc, char *argv[]) {
         SDL_RenderPresent(renderer);
         generations++;
         printf("%i\n", generations);
-        Sleep(50);
+        Sleep(17);
         //Sleep(x) -> wait x miliseconds before continuing
     }
     free(field);
