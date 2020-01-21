@@ -8,8 +8,18 @@ const int SCREEN_HEIGHT = 1080;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
-int field[1080][1920];
-int fieldCopy[1080][1920];
+int ppc = 10; //pixels per cell
+int field[108][192];
+int fieldCopy[108][192];
+
+void paintCell(SDL_Renderer* renderer, int ppc, int c, int l) {
+
+    for (int pc = c * ppc; pc < c * ppc + ppc; pc++) {
+        for (int pl = l * ppc; pl < l * ppc + ppc; pl++) {
+            SDL_RenderDrawPoint(renderer, pc, pl);
+        }
+    }
+}
 
 int main(int argc, char *argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -36,12 +46,12 @@ int main(int argc, char *argv[]) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         //SDL RendererClear sets entire window to color specified in renderer draw color
     }
-    for(int c = 0; c < 1920; c++) {
-        for(int l = 0; l < 1080; l++) {
-            if (rand() % 13 == 0) {
+    for(int c = 0; c < SCREEN_WIDTH / ppc; c++) {
+        for(int l = 0; l < SCREEN_HEIGHT / ppc; l++) {
+            if (rand() % 7 == 0) {
                 field[l][c] = 1;
                 fieldCopy[l][c] = 1;
-                SDL_RenderDrawPoint(renderer, c, l);
+                paintCell(renderer, ppc, c, l);
             }
             else {
                 field[l][c] = 0;
@@ -53,8 +63,8 @@ int main(int argc, char *argv[]) {
     int generations = 0;
     printf("%i\n", generations);
     while (1) {
-        for (int c = 0; c < 1920; c++) {
-            for (int l = 0; l < 1080; l++) {
+        for (int c = 0; c < SCREEN_WIDTH / ppc; c++) {
+            for (int l = 0; l < SCREEN_HEIGHT / ppc; l++) {
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 int AliveNeighbors = 0;
                 for (int nc = c - 1; nc <= c + 1; nc++) {
@@ -62,15 +72,15 @@ int main(int argc, char *argv[]) {
                         int nlav = nl;
                         int ncav = nc;
                         if (nl < 0) {
-                            nl = 1079;
+                            nl = SCREEN_HEIGHT / ppc - 1;
                         }
-                        if (nl > 1079) {
+                        if (nl > SCREEN_HEIGHT / ppc - 1) {
                             nl = 0;
                         }
                         if (nc < 0) {
-                            nc = 1919;
+                            nc = SCREEN_WIDTH / ppc - 1;
                         }
-                        if (nc > 1919) {
+                        if (nc > SCREEN_WIDTH / ppc - 1) {
                             nc = 0;
                         }
                         if (nl != l || nc != c) {
@@ -85,23 +95,23 @@ int main(int argc, char *argv[]) {
                 if (AliveNeighbors < 2 || AliveNeighbors > 3) {
                     fieldCopy[l][c] = 0;
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                    SDL_RenderDrawPoint(renderer, c, l);
+                    paintCell(renderer, ppc, c, l);
                 }
                 if (AliveNeighbors == 3) {
                     fieldCopy[l][c] = 1;
-                    SDL_RenderDrawPoint(renderer, c, l);
+                    paintCell(renderer, ppc, c, l);
                 }
             }
         }
-        for (int c = 0; c < 1920; c++) {
-            for (int l = 0; l < 1080; l++) {
+        for (int c = 0; c < SCREEN_WIDTH / ppc; c++) {
+            for (int l = 0; l < SCREEN_HEIGHT / ppc; l++) {
                 field[l][c] = fieldCopy[l][c];
             }
         }
         SDL_RenderPresent(renderer);
         generations++;
         printf("%i\n", generations);
-        //Sleep(250);
+        //Sleep(500);
         //Sleep(x) -> wait x miliseconds before continuing
     }
     return 0;
