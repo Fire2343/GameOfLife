@@ -4,12 +4,12 @@
 #include <Windows.h>
 #include <time.h>
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1200;
+const int SCREEN_HEIGHT = 600;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
-int ppc = 4; //pixels per cell
+int ppc = 5; //pixels per cell
 
 void paintCell(SDL_Renderer* renderer, int ppc, int c, int l) {
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         }
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         if (renderer == NULL)
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
