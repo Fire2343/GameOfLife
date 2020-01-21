@@ -4,20 +4,22 @@
 #include <Windows.h>
 #include <time.h>
 
-const int SCREEN_WIDTH = 1200;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
-int ppc = 5; //pixels per cell
+int ppc = 10; //pixels per cell
 
-void paintCell(SDL_Renderer* renderer, int ppc, int c, int l) {
+void paintCell(SDL_Renderer *renderer, int ppc, int c, int l) {
 
-    for (int pc = c * ppc; pc < c * ppc + ppc; pc++) {
-        for (int pl = l * ppc; pl < l * ppc + ppc; pl++) {
-            SDL_RenderDrawPoint(renderer, pc, pl);
-        }
-    }
+    SDL_Rect rect;
+    rect.x = c * ppc;
+    rect.y = l * ppc;
+    rect.w = ppc;
+    rect.h = ppc;
+
+    SDL_RenderFillRect(renderer, &rect);
 }
 
 int main(int argc, char *argv[]) {
