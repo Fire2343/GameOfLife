@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
         SDL_RenderPresent(renderer);
         generations++;
         printf("%i\n", generations);
-        //Sleep(500);
+        Sleep(50);
         //Sleep(x) -> wait x miliseconds before continuing
     }
     free(field);
