@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     }
     for(int c = 0; c < fieldWidth; c++) {
         for(int l = 0; l < fieldHeight; l++) {
-            if (rand() % 3 == 0) {
+            if (rand() % 11 == 0) {
                 field[l * fieldWidth + c] = 1;
                 fieldCopy[l * fieldWidth + c] = 1;
                 paintCell(renderer, ppc, c, l);
@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
     SDL_RenderPresent(renderer);
     int generations = 0;
     printf("%i\n", generations);
+    Sleep(2000);
+    //Sleep(x) -> wait x miliseconds before continuing
     while (1) {
         for (int c = 0; c < fieldWidth; c++) {
             for (int l = 0; l < fieldHeight; l++) {
@@ -121,8 +123,7 @@ int main(int argc, char *argv[]) {
         SDL_RenderPresent(renderer);
         generations++;
         printf("%i\n", generations);
-        Sleep(17);
-        //Sleep(x) -> wait x miliseconds before continuing
+        Sleep(50);
     }
     free(field);
     free(fieldCopy);
