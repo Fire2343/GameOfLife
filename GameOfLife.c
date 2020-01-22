@@ -75,6 +75,9 @@ int main(int argc, char *argv[]) {
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 int AliveNeighbors = 0;
                 for (int nc = c - 1; nc <= c + 1; nc++) {
+                    if (AliveNeighbors > 3) {
+                        break;
+                    }
                     for (int nl = l - 1; nl <= l + 1; nl++) {
                         int nlav = nl;
                         int ncav = nc;
@@ -123,7 +126,7 @@ int main(int argc, char *argv[]) {
         SDL_RenderPresent(renderer);
         generations++;
         printf("%i\n", generations);
-        Sleep(50);
+        Sleep(0);
     }
     free(field);
     free(fieldCopy);
